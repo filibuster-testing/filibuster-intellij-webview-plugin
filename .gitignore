@@ -40,3 +40,7 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
+### Plugin Stuff ###
+.idea/
+.run/
