@@ -19,7 +19,6 @@ public class FilibusterViewerWindow implements Disposable {
 
     private final SingleFileWatcher singleFileWatcher;
     public FilibusterViewerWindow(Project project) {
-        System.out.println("FilibusterViewerWindow Created");
         JBCefBrowser browser = new JBCefBrowser();
         registerAppSchemeHandler();
         browser.loadURL("file:///tmp/filibuster/index.html");

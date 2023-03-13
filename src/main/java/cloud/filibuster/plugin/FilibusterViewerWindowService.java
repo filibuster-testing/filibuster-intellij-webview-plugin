@@ -10,7 +10,6 @@ public class FilibusterViewerWindowService {
     }
 
     public FilibusterViewerWindowService(Project project) {
-        System.out.println("This is called why?");
         this.filibusterViewerWindow = new FilibusterViewerWindow(project);
     }
 }
