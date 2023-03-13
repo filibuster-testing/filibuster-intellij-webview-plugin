@@ -21,11 +21,9 @@ public class FilibusterToolWindowListener implements ToolWindowManagerListener {
     public void stateChanged(@NotNull ToolWindowManager toolWindowManager) {
         ToolWindow tw = ToolWindowManager.getInstance(project).getToolWindow("Filibuster");
         FilibusterViewerWindow filibusterViewerWindow = project.getService(FilibusterViewerWindowService.class).getFilibusterViewerWindow();
-        if(Objects.requireNonNull(tw).isVisible())
-        {
+        if (Objects.requireNonNull(tw).isVisible()) {
             filibusterViewerWindow.resumeUpdates();
-        }
-        else {
+        } else {
             filibusterViewerWindow.stopUpdates();
         }
         wasLastActive = tw.isActive();

@@ -18,11 +18,12 @@ public class SingleFileWatcher implements Disposable {
     private enum FileEventKind {
         CREATED, MODIFIED, DELETED
     }
+
     private long lastModifiedTime;
 
     private boolean timerActive = false;
-    public SingleFileWatcher(File path, long period)
-    {
+
+    public SingleFileWatcher(File path, long period) {
         this.file = path;
         this.period = period;
     }
@@ -37,30 +38,22 @@ public class SingleFileWatcher implements Disposable {
         return this;
     }
 
-    protected void pollFileInfo()
-    {
+    protected void pollFileInfo() {
         long lastModifiedBefore = lastModifiedTime;
         lastModifiedTime = file.lastModified();
-        if (lastModifiedBefore == 0L && lastModifiedTime > 0L)
-        {
+        if (lastModifiedBefore == 0L && lastModifiedTime > 0L) {
             notifyListeners(FileEventKind.CREATED);
-        }
-        else if (lastModifiedBefore > 0L  && lastModifiedTime  == 0L )
-        {
+        } else if (lastModifiedBefore > 0L && lastModifiedTime == 0L) {
             notifyListeners(FileEventKind.DELETED);
-        }
-        else if(lastModifiedTime > lastModifiedBefore)
-        {
+        } else if (lastModifiedTime > lastModifiedBefore) {
             notifyListeners(FileEventKind.MODIFIED);
         }
     }
 
-    protected void notifyListeners(FileEventKind event)
-    {
+    protected void notifyListeners(FileEventKind event) {
         FileEvent fileEvent = new FileEvent(file);
         for (FileListener listener : listeners) {
-            switch(event)
-            {
+            switch (event) {
                 case CREATED:
                     listener.onCreated(fileEvent);
                     break;
@@ -73,9 +66,9 @@ public class SingleFileWatcher implements Disposable {
             }
         }
     }
-    public void startWatch()
-    {
-        if(!timerActive) {
+
+    public void startWatch() {
+        if (!timerActive) {
             timer = new Timer(true);
             lastModifiedTime = file.lastModified();
             timer.schedule(new TimerTask() {
@@ -88,8 +81,7 @@ public class SingleFileWatcher implements Disposable {
         }
     }
 
-    public void stopWatch()
-    {
+    public void stopWatch() {
         timer.cancel();
         timerActive = false;
     }

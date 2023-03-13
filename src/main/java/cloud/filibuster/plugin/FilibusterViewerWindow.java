@@ -18,6 +18,7 @@ public class FilibusterViewerWindow implements Disposable {
     private JBCefBrowser webView;
 
     private final SingleFileWatcher singleFileWatcher;
+
     public FilibusterViewerWindow(Project project) {
         JBCefBrowser browser = new JBCefBrowser();
         registerAppSchemeHandler();
@@ -56,11 +57,11 @@ public class FilibusterViewerWindow implements Disposable {
         CefApp.getInstance().registerSchemeHandlerFactory("http", "filibuster.local", new CustomSchemeHandlerFactory());
     }
 
-    public void resumeUpdates(){
+    public void resumeUpdates() {
         this.singleFileWatcher.startWatch();
     }
 
-    public void stopUpdates(){
+    public void stopUpdates() {
         this.singleFileWatcher.stopWatch();
     }
 
