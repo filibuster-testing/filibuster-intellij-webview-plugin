@@ -4,7 +4,7 @@ package cloud.filibuster.plugin;
 
 import cloud.filibuster.plugin.files.FileAdapter;
 import cloud.filibuster.plugin.files.FileEvent;
-import cloud.filibuster.plugin.files.FileWatcher;
+import cloud.filibuster.plugin.files.SingleFileWatcher;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Disposer;
@@ -17,7 +17,7 @@ import java.io.File;
 public class FilibusterViewerWindow implements Disposable {
     private JBCefBrowser webView;
 
-    private FileWatcher fileWatcher;
+    private final SingleFileWatcher singleFileWatcher;
 
     public FilibusterViewerWindow(Project project) {
         JBCefBrowser browser = new JBCefBrowser();
@@ -26,29 +26,27 @@ public class FilibusterViewerWindow implements Disposable {
         Disposer.register(this, browser);
 
         this.webView = browser;
-        this.fileWatcher = new FileWatcher(new File("/tmp/filibuster"));
-        fileWatcher.addListener(new FileAdapter() {
-            private void reloadBrowserConditionally(File file) {
-                if (file.getName().endsWith("index.html")) {
-                    browser.loadURL("file://" + file.getAbsolutePath());
-                }
+        this.singleFileWatcher = new SingleFileWatcher(new File("/tmp/filibuster/index.html"), 1000);
+        singleFileWatcher.addListener(new FileAdapter() {
+            private void reloadBrowser(File file) {
+                browser.loadURL("file://" + file.getAbsolutePath());
             }
 
             public void onCreated(FileEvent event) {
                 System.out.println("file.created: " + event.getFile().getName());
-                reloadBrowserConditionally(event.getFile());
+                reloadBrowser(event.getFile());
             }
 
             public void onModified(FileEvent event) {
                 System.out.println("file.modified: " + event.getFile().getName());
-                reloadBrowserConditionally(event.getFile());
+                reloadBrowser(event.getFile());
             }
 
             public void onDeleted(FileEvent event) {
                 System.out.println("file.deleted: " + event.getFile().getName());
-                reloadBrowserConditionally(event.getFile());
+                reloadBrowser(event.getFile());
             }
-        }).watch();
+        }).startWatch();
     }
 
     public JComponent getContent() {
@@ -59,8 +57,17 @@ public class FilibusterViewerWindow implements Disposable {
         CefApp.getInstance().registerSchemeHandlerFactory("http", "filibuster.local", new CustomSchemeHandlerFactory());
     }
 
+    public void resumeUpdates() {
+        this.singleFileWatcher.startWatch();
+    }
+
+    public void stopUpdates() {
+        this.singleFileWatcher.stopWatch();
+    }
+
     @Override
     public void dispose() {
         webView.dispose();
+        singleFileWatcher.dispose();
     }
 }
