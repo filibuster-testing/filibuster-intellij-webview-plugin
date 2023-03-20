@@ -14,7 +14,7 @@
          Simple HTML elements (text formatting, paragraphs, and lists) can be added inside of <![CDATA[ ]]> tag.
          Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
     <description><![CDATA[
-        Filibuster test execution reporter for use with the Filibuster Java instrumentation.
+        Filibuster test execution reporter for use with the Filibuster Java instrumentation.  This plugin visualizes the test output, which is normally only present as logs, when using the Filibuster Java fault injection library.
     ]]></description>
 
     <!-- Product and plugin compatibility requirements.
