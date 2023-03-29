@@ -19,34 +19,36 @@ public class FilibusterViewerWindow implements Disposable {
 
     private final SingleFileWatcher singleFileWatcher;
 
-    public FilibusterViewerWindow(Project project) {
-        JBCefBrowser browser = new JBCefBrowser();
-        registerAppSchemeHandler();
-        browser.loadURL("file:///tmp/filibuster/index.html");
-        Disposer.register(this, browser);
+    private final String TEST_PAGE_PATH = "/tmp/filibuster/index.html";
 
-        this.webView = browser;
-        this.singleFileWatcher = new SingleFileWatcher(new File("/tmp/filibuster/index.html"), 1000);
+    public FilibusterViewerWindow(Project project) {
+        this.webView = new JBCefBrowser();
+        registerAppSchemeHandler();
+        Disposer.register(this, this.webView);
+        this.singleFileWatcher = new SingleFileWatcher(new File(TEST_PAGE_PATH), 1000);
         singleFileWatcher.addListener(new FileAdapter() {
-            private void reloadBrowser(File file) {
-                browser.loadURL("file://" + file.getAbsolutePath());
-            }
 
             public void onCreated(FileEvent event) {
                 System.out.println("file.created: " + event.getFile().getName());
-                reloadBrowser(event.getFile());
+                reloadFilibusterTestPage();
             }
 
             public void onModified(FileEvent event) {
                 System.out.println("file.modified: " + event.getFile().getName());
-                reloadBrowser(event.getFile());
+                reloadFilibusterTestPage();
             }
 
             public void onDeleted(FileEvent event) {
                 System.out.println("file.deleted: " + event.getFile().getName());
-                reloadBrowser(event.getFile());
+                reloadFilibusterTestPage();
             }
         }).startWatch();
+        reloadFilibusterTestPage();
+    }
+
+    private void reloadFilibusterTestPage()
+    {
+        this.webView.loadURL("file://"+ TEST_PAGE_PATH);
     }
 
     public JComponent getContent() {
@@ -58,6 +60,7 @@ public class FilibusterViewerWindow implements Disposable {
     }
 
     public void resumeUpdates() {
+        reloadFilibusterTestPage();
         this.singleFileWatcher.startWatch();
     }
 
