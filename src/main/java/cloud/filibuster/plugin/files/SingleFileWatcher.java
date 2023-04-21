@@ -28,6 +28,11 @@ public class SingleFileWatcher implements Disposable {
         this.period = period;
     }
 
+    public boolean isTimerActive()
+    {
+        return timerActive;
+    }
+
     public SingleFileWatcher addListener(FileListener listener) {
         listeners.add(listener);
         return this;

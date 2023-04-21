@@ -60,8 +60,10 @@ public class FilibusterViewerWindow implements Disposable {
     }
 
     public void resumeUpdates() {
-        reloadFilibusterTestPage();
-        this.singleFileWatcher.startWatch();
+        if(!this.singleFileWatcher.isTimerActive()) {
+            reloadFilibusterTestPage();
+            this.singleFileWatcher.startWatch();
+        }
     }
 
     public void stopUpdates() {
@@ -73,4 +75,5 @@ public class FilibusterViewerWindow implements Disposable {
         webView.dispose();
         singleFileWatcher.dispose();
     }
+
 }
