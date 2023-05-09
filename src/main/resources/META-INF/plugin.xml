@@ -5,7 +5,7 @@
 
     <!-- Public plugin name should be written in Title Case.
          Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-name -->
-    <name>Filibuster</name>
+    <name>Filibuster (for MacOS, Linux)</name>
 
     <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
     <vendor email="christopher.meiklejohn@gmail.com" url="https://filibuster.cloud">Filibuster</vendor>
@@ -14,7 +14,7 @@
          Simple HTML elements (text formatting, paragraphs, and lists) can be added inside of <![CDATA[ ]]> tag.
          Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
     <description><![CDATA[
-        Filibuster test execution reporter for use with the Filibuster Java instrumentation.  This plugin visualizes the test output, which is normally only present as logs, when using the Filibuster Java fault injection library.
+        Filibuster test execution reporter for use with the Filibuster Java instrumentation.  This plugin visualizes the test output, which is normally only present as logs, when using the Filibuster Java fault injection library.  This plugin is only supported on MacOS and Linux.
     ]]></description>
 
     <!-- Product and plugin compatibility requirements.
